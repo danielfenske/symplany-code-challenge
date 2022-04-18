@@ -269,8 +269,10 @@ let playerTwo = [];
 let playerOneCard;
 let playerTwoCard;
 
+
+
 // parent function for game
-function gameOfWar(array){
+function gameOfWar(array) {
 
     let shuffledDeck = shuffleDeck(array);
 
@@ -280,12 +282,13 @@ function gameOfWar(array){
 }
 
 
+
 // 'shuffleDeck' (f) takes in deckOfCards and shuffles it
 // notes: this formula was found in research and uses the Fisher-Yates algorithm
 // what I learned: the algorithm is a stronger method of randomizing 
 // a set of values (compared to sorting)  because every value is 
 // equally likely to be selected (like drawing from a hat). 
-function shuffleDeck(array){
+function shuffleDeck(array) {
 
     let shuffledDeck;
 
@@ -307,9 +310,10 @@ function shuffleDeck(array){
 }
 
 
+
 // 'dealDeck' distributes the shuffled deck to player one 
 // and player two, alternating each card from the top of the deck to the bottom
-function dealDeck(array){
+function dealDeck(array) {
     for (let i = array.length - 1; i >= 0; i--) {
         if (i % 2 === 0) {
             playerOne.push(array[i]);
@@ -319,15 +323,15 @@ function dealDeck(array){
     }
 }
 
-gameOfWar(deckOfCards);
 
-console.log(`Player one's cards:`, playerOne);
-console.log(`Player two's cards:`, playerTwo);
 
-// 'playWar' is where the actual game is played
+// 'playWar' is where the game is played
 // the function will continue to run until a winner is determined
 // (one player has no cards remaining in their deck)
 function playWar() {
+
+    playerOneCard = playerOne[playerOne.length - 1];
+    playerTwoCard = playerTwo[playerTwo.length - 1];
 
     if (playerOne.length === 0) {
         console.log('Player two wins!');
@@ -335,7 +339,36 @@ function playWar() {
         console.log('Player one wins!');
     } else {
 
-        playerOneCard = playerOne[playerOne.length - 1];
-        playerTwoCard = playerTwo[playerTwo.length - 1];
+        // removes both players very top card from stack
+        playerOne.pop();
+        playerTwo.pop();
+
+        determineRoundWinner();
     }
 }
+
+
+// 'determineRoundWinner' is a helper function of
+// 'playWar' that evaluates the value of each card in round and 
+// adds both cards to the player with the highest value
+function determineRoundWinner() {
+
+    if (playerOneCard.value > playerTwoCard.value) {
+
+        console.log(`Player one wins the round! ${playerOneCard.card} of ${playerOneCard.suit} beats ${playerTwoCard.card} of ${playerTwoCard.suit}`);
+        playerOne.unshift(playerOneCard, playerTwoCard);
+
+
+    } else if (playerTwoCard.value > playerOneCard.value) {
+
+        console.log(`Player one wins the round! ${playerTwoCard.card} of ${playerTwoCard.suit} beats ${playerOneCard.card} of ${playerOneCard.suit}`);
+        playerTwo.unshift(playerTwoCard, playerOneCard);
+
+    } else {
+        console.log('There was a tie!');
+    }
+
+    playWar();
+}
+
+gameOfWar(deckOfCards);
