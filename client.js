@@ -266,12 +266,17 @@ const deckOfCards = [{
 let playerOne = [];
 let playerTwo = [];
 
+let playerOneCard;
+let playerTwoCard;
+
 // parent function for game
-const gameOfWar = (array) => {
+function gameOfWar(array){
 
     let shuffledDeck = shuffleDeck(array);
 
     dealDeck(shuffledDeck);
+
+    playWar();
 }
 
 
@@ -280,7 +285,7 @@ const gameOfWar = (array) => {
 // what I learned: the algorithm is a stronger method of randomizing 
 // a set of values (compared to sorting)  because every value is 
 // equally likely to be selected (like drawing from a hat). 
-const shuffleDeck = (array) => {
+function shuffleDeck(array){
 
     let shuffledDeck;
 
@@ -304,7 +309,7 @@ const shuffleDeck = (array) => {
 
 // 'dealDeck' distributes the shuffled deck to player one 
 // and player two, alternating each card from the top of the deck to the bottom
-const dealDeck = (array) => {
+function dealDeck(array){
     for (let i = array.length - 1; i >= 0; i--) {
         if (i % 2 === 0) {
             playerOne.push(array[i]);
@@ -318,3 +323,19 @@ gameOfWar(deckOfCards);
 
 console.log(`Player one's cards:`, playerOne);
 console.log(`Player two's cards:`, playerTwo);
+
+// 'playWar' is where the actual game is played
+// the function will continue to run until a winner is determined
+// (one player has no cards remaining in their deck)
+function playWar() {
+
+    if (playerOne.length === 0) {
+        console.log('Player two wins!');
+    } else if (playerTwo.length === 0) {
+        console.log('Player one wins!');
+    } else {
+
+        playerOneCard = playerOne[playerOne.length - 1];
+        playerTwoCard = playerTwo[playerTwo.length - 1];
+    }
+}
