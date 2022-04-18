@@ -266,8 +266,7 @@ const deckOfCards = [{
 let playerOne = [];
 let playerTwo = [];
 
-let playerOneCard;
-let playerTwoCard;
+let pot = [];
 
 
 
@@ -330,45 +329,170 @@ function dealDeck(array) {
 // (one player has no cards remaining in their deck)
 function playWar() {
 
-    playerOneCard = playerOne[playerOne.length - 1];
-    playerTwoCard = playerTwo[playerTwo.length - 1];
-
     if (playerOne.length === 0) {
         console.log('Player two wins!');
+        return;
+
     } else if (playerTwo.length === 0) {
         console.log('Player one wins!');
+        return;
+
     } else {
-
-        // removes both players very top card from stack
-        playerOne.pop();
-        playerTwo.pop();
-
-        determineRoundWinner();
+        // determineRoundWinner();
+        flipOneCard();
     }
 }
 
 
-// 'determineRoundWinner' is a helper function of
-// 'playWar' that evaluates the value of each card in round and 
-// adds both cards to the player with the highest value
-function determineRoundWinner() {
+
+function flipOneCard() {
+
+    // player#Card represents each player's top card in their deck
+    playerOneCard = playerOne[playerOne.length - 1];
+    playerTwoCard = playerTwo[playerTwo.length - 1];
+
+    // removes the last value of each player array,
+    // which is the top of each deck
+    playerOne.pop();
+    playerTwo.pop();
+
+
+    // since 'pot' represents all current cards being played in one round,
+    // every card laid is added to the current stack of cards
+    pot = [...pot, playerOneCard, playerTwoCard];
+
 
     if (playerOneCard.value > playerTwoCard.value) {
 
         console.log(`Player one wins the round! ${playerOneCard.card} of ${playerOneCard.suit} beats ${playerTwoCard.card} of ${playerTwoCard.suit}`);
-        playerOne.unshift(playerOneCard, playerTwoCard);
 
+        // merges pot array to the beginning of playerOne array,
+        // which is the bottom of the deck
+        playerOne = pot.concat(playerOne);
+
+        // empty the pot for the next round
+        pot = [];
+
+        playWar();
 
     } else if (playerTwoCard.value > playerOneCard.value) {
 
-        console.log(`Player one wins the round! ${playerTwoCard.card} of ${playerTwoCard.suit} beats ${playerOneCard.card} of ${playerOneCard.suit}`);
-        playerTwo.unshift(playerTwoCard, playerOneCard);
+        console.log(`Player two wins the round! ${playerTwoCard.card} of ${playerTwoCard.suit} beats ${playerOneCard.card} of ${playerOneCard.suit}`);
+
+        playerTwo = pot.concat(playerOne);
+
+        pot = [];
+
+        playWar();
 
     } else {
         console.log('There was a tie!');
-    }
 
-    playWar();
+        // flipFourMoreCards();
+    }
 }
+
+
+
+
+// function flipFourMoreCards() {
+
+//     // player#Cards represents the top four cards for each player's deck
+//     let playerOneCards = playerOne.slice(-4);
+//     let playerTwoCards = playerTwo.slice(-4);
+
+//     // removes the last value of each player array,
+//     // which is the top of each deck
+//     playerOne = playerOne.slice(0, -4);
+//     playerTwo = playerTwo.slice(0, -4);
+
+//     // since 'pot' represents all current cards being played in one round,
+//     // every card laid is added to the current stack of cards
+//     pot = [...pot, playerOneCards, playerTwoCards];
+
+
+//     if (playerOne.length <= 0) {
+//         console.log('Player two wins!');
+//         return;
+
+//     } else if (playerTwo.length <= 0) {
+//         console.log('Player one wins!');
+//         return;
+
+//     } else {
+//         if (playerOneCards[3].value > playerTwoCards[3].value) {
+
+//             console.log(`Player one wins the round! ${playerOneCards[3].card} of ${playerOneCards[3].suit} beats ${playerTwoCards[3].card} of ${playerTwoCards[3].suit}`);
+
+//             // merges pot array to the beginning of playerOne array,
+//             // which is the bottom of the deck
+//             playerOne = pot.concat(playerOne);
+
+//             // empty the pot for the next round
+//             pot = [];
+
+//             playWar();
+
+//         } else if (playerTwoCards[3].value > playerOneCards[3].value) {
+
+//             console.log(`Player two wins the round! ${playerTwoCards[3].card} of ${playerTwoCards[3].suit} beats ${playerOneCards[3].card} of ${playerOneCards[3].suit}`);
+
+//             playerTwo = pot.concat(playerOne);
+
+//             pot = [];
+
+//             playWar();
+
+//         } else {
+
+//             console.log('There was a tie!');
+
+//             flipFourMoreCards();
+//         }
+//     }
+// }
+
+
+// // 'determineRoundWinner' is a helper function of
+// // 'playWar' that evaluates the value of each card in round and 
+// // adds both cards to the player with the highest value
+// function determineRoundWinner() {
+
+//     playerOneCard = playerOne[playerOne.length - 1];
+//     playerTwoCard = playerTwo[playerTwo.length - 1];
+
+//     if (playerOneCard.value > playerTwoCard.value) {
+
+//         console.log(`Player one wins the round! ${playerOneCard.card} of ${playerOneCard.suit} beats ${playerTwoCard.card} of ${playerTwoCard.suit}`);
+//         playerOne.unshift(playerOneCard, playerTwoCard);
+
+
+//     } else if (playerTwoCard.value > playerOneCard.value) {
+
+//         console.log(`Player two wins the round! ${playerTwoCard.card} of ${playerTwoCard.suit} beats ${playerOneCard.card} of ${playerOneCard.suit}`);
+//         playerTwo.unshift(playerTwoCard, playerOneCard);
+
+//     } else {
+//         console.log('There was a tie!');
+//         tieBreaker();
+//     }
+
+//     // removes both players very top card from stack
+//     playerOne.pop();
+//     playerTwo.pop();
+
+//     console.log('PlayerOne', playerOne);
+//     console.log('PlayerTwo', playerTwo);
+
+//     playWar();
+// }
+
+// // 'tieBreaker' is run when the two cards shown are equal to one another
+// // each player placed 3 cards face down, then a card face up
+// // the player with the higher card faced up gets the whole pot
+// function tieBreaker() {
+
+// }
+
 
 gameOfWar(deckOfCards);
