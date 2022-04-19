@@ -357,8 +357,8 @@ function playWar() {
         playerTwo = pot.concat(playerTwo);
 
         console.log(`%cPlayer two wins!`, `color: ${color}; background: ${bgColor}; font-size: ${fontSize}`);
-        console.error('Player two cards:', playerTwo);
-        console.log('Player one cards:', playerOne);
+        console.log('Player two cards:', playerTwo);
+        console.error('Player one cards:', playerOne);
 
     } else if (playerTwo.length === 0) {
 
@@ -376,7 +376,9 @@ function playWar() {
 }
 
 
-
+// 'flipOneCard' is initiated at the start of each round
+// the higher card wins the pot. If the cards are equal in value,
+// the round goes into a sub-round where three cards are added to the pot 
 function flipOneCard() {
 
     // player#Card represents each player's top card in their deck
@@ -394,6 +396,9 @@ function flipOneCard() {
 
     if (playerOneCard.value > playerTwoCard.value) {
 
+        console.log(`Player one card count: ${playerOne.length}`);
+        console.log(`Player two card count: ${playerTwo.length}`);
+        console.log('Pot:', pot);
         console.log(`Player one wins the round! ${playerOneCard.card} of ${playerOneCard.suit} beats ${playerTwoCard.card} of ${playerTwoCard.suit}`);
 
         // merges pot array to the beginning of playerOne array,
@@ -403,10 +408,14 @@ function flipOneCard() {
         // empty the pot for the next round
         pot = [];
 
+        // onto the next round! 
         playWar();
 
     } else if (playerTwoCard.value > playerOneCard.value) {
 
+        console.log(`Player one card count: ${playerOne.length}`);
+        console.log(`Player two card count: ${playerTwo.length}`);
+        console.log('Pot:', pot);
         console.log(`Player two wins the round! ${playerTwoCard.card} of ${playerTwoCard.suit} beats ${playerOneCard.card} of ${playerOneCard.suit}`);
 
         playerTwo = pot.concat(playerTwo);
@@ -417,7 +426,7 @@ function flipOneCard() {
 
     } else {
 
-        console.log('There was a tie!');
+        console.log('There was a tie:', pot[pot.length - 1], pot[pot.length - 2]);
 
         // flipFourMoreCards();
         addThreeMoreCards();
@@ -426,6 +435,10 @@ function flipOneCard() {
     return;
 }
 
+
+// 'addThreeMoreCards' adds six more cards to the pot, 
+// which is three per player. 'playWar' is run following this
+// to determine if another card can be flipped in 'flipOneCard'
 function addThreeMoreCards() {
 
     // player#Cards represents the top four cards for each player's deck
@@ -444,6 +457,14 @@ function addThreeMoreCards() {
 }
 
 
+// let's play WAR!
+gameOfWar(deckOfCards);
+
+
+
+
+
+// ==== THIS FUNCTION HAS BEEN ARCHIVED ====
 // function flipFourMoreCards() {
 
 //     // player#Cards represents the top four cards for each player's deck
@@ -484,7 +505,7 @@ function addThreeMoreCards() {
 //         console.error('Player two cards:', playerTwo);
 
 //     } else {
-        
+
 //         if (playerOneFlippedCard.value > playerTwoFlippedCard.value) {
 
 //             console.log(`Player one wins the tiebreaker! ${playerOneFlippedCard.card} of ${playerOneFlippedCard.suit} beats ${playerTwoFlippedCard.card} of ${playerOneFlippedCard.suit}`);
@@ -518,7 +539,3 @@ function addThreeMoreCards() {
 
 //     return;
 // }
-
-
-// let's play WAR!
-gameOfWar(deckOfCards);
