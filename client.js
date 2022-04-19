@@ -357,8 +357,8 @@ function playWar() {
         playerTwo = pot.concat(playerTwo);
 
         console.log(`%cPlayer two wins!`, `color: ${color}; background: ${bgColor}; font-size: ${fontSize}`);
-        console.error('Player two cards:', playerTwo);
-        console.log('Player one cards:', playerOne);
+        console.log('Player two cards:', playerTwo);
+        console.error('Player one cards:', playerOne);
 
     } else if (playerTwo.length === 0) {
 
@@ -376,7 +376,9 @@ function playWar() {
 }
 
 
-
+// 'flipOneCard' is initiated at the start of each round
+// the higher card wins the pot. If the cards are equal in value,
+// the round goes into a sub-round where three cards are added to the pot 
 function flipOneCard() {
 
     // player#Card represents each player's top card in their deck
@@ -394,6 +396,9 @@ function flipOneCard() {
 
     if (playerOneCard.value > playerTwoCard.value) {
 
+        console.log(`Player one card count: ${playerOne.length}`);
+        console.log(`Player two card count: ${playerTwo.length}`);
+        console.log('Pot:', pot);
         console.log(`Player one wins the round! ${playerOneCard.card} of ${playerOneCard.suit} beats ${playerTwoCard.card} of ${playerTwoCard.suit}`);
 
         // merges pot array to the beginning of playerOne array,
@@ -403,10 +408,14 @@ function flipOneCard() {
         // empty the pot for the next round
         pot = [];
 
+        // onto the next round! 
         playWar();
 
     } else if (playerTwoCard.value > playerOneCard.value) {
 
+        console.log(`Player one card count: ${playerOne.length}`);
+        console.log(`Player two card count: ${playerTwo.length}`);
+        console.log('Pot:', pot);
         console.log(`Player two wins the round! ${playerTwoCard.card} of ${playerTwoCard.suit} beats ${playerOneCard.card} of ${playerOneCard.suit}`);
 
         playerTwo = pot.concat(playerTwo);
@@ -417,92 +426,116 @@ function flipOneCard() {
 
     } else {
 
-        console.log('There was a tie!');
+        console.log('There was a tie:', pot[pot.length - 1], pot[pot.length - 2]);
 
-        flipFourMoreCards();
+        // flipFourMoreCards();
+        addThreeMoreCards();
     }
 
     return;
 }
 
 
-
-
-function flipFourMoreCards() {
+// 'addThreeMoreCards' adds six more cards to the pot, 
+// which is three per player. 'playWar' is run following this
+// to determine if another card can be flipped in 'flipOneCard'
+function addThreeMoreCards() {
 
     // player#Cards represents the top four cards for each player's deck
-    let playerOneCards = playerOne.slice(-4);
-    let playerTwoCards = playerTwo.slice(-4);
+    let playerOneCards = playerOne.slice(-3);
+    let playerTwoCards = playerTwo.slice(-3);
 
     // removes the top four cards from each player's decks
-    playerOne = playerOne.slice(0, -4);
-    playerTwo = playerTwo.slice(0, -4);
+    playerOne = playerOne.slice(0, -3);
+    playerTwo = playerTwo.slice(0, -3);
 
     // since 'pot' represents all current cards being played in one round,
     // every card laid is added to the current stack of cards
     pot = pot.concat(playerOneCards, playerTwoCards);
 
-    let playerOneFlippedCard = playerOneCards[playerOneCards.length - 1];
-    let playerTwoFlippedCard = playerTwoCards[playerTwoCards.length - 1];
-
-
-    // if one player doesn't have enough cards to 
-    // flip in the tiebreaker, the game ends 
-    if (playerOne.length === 0) {
-
-        // the winning player needs 
-        // all cards being held in 'pot' 
-        // to total 52 cards
-        playerTwo = pot.concat(playerTwo);
-
-        console.log(`%cPlayer two wins!`, `color: ${color}; background: ${bgColor}; font-size: ${fontSize}`);
-        console.log('Player two cards:', playerTwo);
-        console.error('Player one cards:', playerOne);
-
-    } else if (playerTwo.length === 0) {
-
-        playerOne = pot.concat(playerOne);
-
-        console.log(`%cPlayer one wins!`, `color: ${color}; background: ${bgColor}; font-size: ${fontSize}`);
-        console.log('Player one cards:', playerOne);
-        console.error('Player two cards:', playerTwo);
-
-    } else {
-        
-        if (playerOneFlippedCard.value > playerTwoFlippedCard.value) {
-
-            console.log(`Player one wins the tiebreaker! ${playerOneFlippedCard.card} of ${playerOneFlippedCard.suit} beats ${playerTwoFlippedCard.card} of ${playerOneFlippedCard.suit}`);
-
-            // merges pot array to the beginning of playerOne array,
-            // which is the bottom of the deck
-            playerOne = pot.concat(playerOne);
-
-            // empty the pot for the next round
-            pot = [];
-
-            playWar();
-
-        } else if (playerTwoFlippedCard.value > playerOneFlippedCard.value) {
-
-            console.log(`Player two wins the tiebreaker! ${playerTwoFlippedCard.card} of ${playerTwoFlippedCard.suit} beats ${playerOneFlippedCard.card} of ${playerOneFlippedCard.suit}`);
-
-            playerTwo = pot.concat(playerTwo);
-
-            pot = [];
-
-            playWar();
-
-        } else {
-
-            console.log('There was a tie!');
-
-            flipFourMoreCards();
-        }
-    }
-
-    return;
+    playWar();
 }
 
 
 // let's play WAR!
 gameOfWar(deckOfCards);
+
+
+
+
+
+// ==== THIS FUNCTION HAS BEEN ARCHIVED ====
+// function flipFourMoreCards() {
+
+//     // player#Cards represents the top four cards for each player's deck
+//     let playerOneCards = playerOne.slice(-4);
+//     let playerTwoCards = playerTwo.slice(-4);
+
+//     // removes the top four cards from each player's decks
+//     playerOne = playerOne.slice(0, -4);
+//     playerTwo = playerTwo.slice(0, -4);
+
+//     // since 'pot' represents all current cards being played in one round,
+//     // every card laid is added to the current stack of cards
+//     pot = pot.concat(playerOneCards, playerTwoCards);
+
+//     let playerOneFlippedCard = playerOneCards[playerOneCards.length - 1];
+//     let playerTwoFlippedCard = playerTwoCards[playerTwoCards.length - 1];
+
+
+//     // if one player doesn't have enough cards to 
+//     // flip in the tiebreaker, the game ends 
+//     if (playerOne.length === 0) {
+
+//         // the winning player needs 
+//         // all cards being held in 'pot' 
+//         // to total 52 cards
+//         playerTwo = pot.concat(playerTwo);
+
+//         console.log(`%cPlayer two wins!`, `color: ${color}; background: ${bgColor}; font-size: ${fontSize}`);
+//         console.log('Player two cards:', playerTwo);
+//         console.error('Player one cards:', playerOne);
+
+//     } else if (playerTwo.length === 0) {
+
+//         playerOne = pot.concat(playerOne);
+
+//         console.log(`%cPlayer one wins!`, `color: ${color}; background: ${bgColor}; font-size: ${fontSize}`);
+//         console.log('Player one cards:', playerOne);
+//         console.error('Player two cards:', playerTwo);
+
+//     } else {
+
+//         if (playerOneFlippedCard.value > playerTwoFlippedCard.value) {
+
+//             console.log(`Player one wins the tiebreaker! ${playerOneFlippedCard.card} of ${playerOneFlippedCard.suit} beats ${playerTwoFlippedCard.card} of ${playerOneFlippedCard.suit}`);
+
+//             // merges pot array to the beginning of playerOne array,
+//             // which is the bottom of the deck
+//             playerOne = pot.concat(playerOne);
+
+//             // empty the pot for the next round
+//             pot = [];
+
+//             playWar();
+
+//         } else if (playerTwoFlippedCard.value > playerOneFlippedCard.value) {
+
+//             console.log(`Player two wins the tiebreaker! ${playerTwoFlippedCard.card} of ${playerTwoFlippedCard.suit} beats ${playerOneFlippedCard.card} of ${playerOneFlippedCard.suit}`);
+
+//             playerTwo = pot.concat(playerTwo);
+
+//             pot = [];
+
+//             playWar();
+
+//         } else {
+
+//             console.log('There was a tie!');
+
+//             flipFourMoreCards();
+//         }
+//     }
+
+//     return;
+// }
