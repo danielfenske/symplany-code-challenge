@@ -1,6 +1,9 @@
 # symplany-code-challenge
 Build a simulation for the card game 'war'.
 
+## Wireframe
+![Wireframe](./game-of-war-wireframe.gif)
+
 ### As a reminder, the rules to War are as follows:
 - A deck of cards is dealt to two players
 - Each player will show the top card on their stack
