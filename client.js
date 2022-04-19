@@ -1,4 +1,6 @@
 console.log(`Let's play war!`);
+
+// styling for 'Winner' console log
 let fontSize = '24px';
 let color = 'blue';
 let bgColor = 'white';
@@ -265,30 +267,38 @@ const deckOfCards = [{
         value: 13
     },
 ]
+
+// each player# variable represents each player's hands
 let playerOne = [];
 let playerTwo = [];
 
-let pot = [];
 
+// 'pot' is the stack of cards from each player
+// during every round
+let pot = [];
 
 
 // parent function for game
 function gameOfWar(array) {
 
+    // shuffled deck
     let shuffledDeck = shuffleDeck(array);
 
+    // deals shuffled deck
     dealDeck(shuffledDeck);
 
+    // initiates game
     playWar();
 }
 
 
 
 // 'shuffleDeck' (f) takes in deckOfCards and shuffles it
-// notes: this formula was found in research and uses the Fisher-Yates algorithm
+// notes: this formula (Fisher-Yates algorithm) was found in research!
 // what I learned: the algorithm is a stronger method of randomizing 
 // a set of values (compared to sorting)  because every value is 
-// equally likely to be selected (like drawing from a hat). 
+// equally likely to be selected (like drawing from a hat). In this
+// context, is essential swaps the position of two given cards in the deck
 function shuffleDeck(array) {
 
     let shuffledDeck;
@@ -300,11 +310,14 @@ function shuffleDeck(array) {
         // the new value) swaps out the 'cards' between these two indexes
         const newIndex = Math.floor(Math.random() * (i + 1));
 
-        const temp = array[i];
+        const temporarySpot = array[i];
         array[i] = array[newIndex];
-        array[newIndex] = temp;
+        array[newIndex] = temporarySpot;
     }
 
+
+    // the deckOfCards (now shuffled), 
+    // becomes 'shuffledDeck'
     shuffledDeck = array;
 
     return shuffledDeck;
@@ -315,6 +328,7 @@ function shuffleDeck(array) {
 // 'dealDeck' distributes the shuffled deck to player one 
 // and player two, alternating each card from the top of the deck to the bottom
 function dealDeck(array) {
+
     for (let i = array.length - 1; i >= 0; i--) {
         if (i % 2 === 0) {
             playerOne.push(array[i]);
@@ -322,6 +336,7 @@ function dealDeck(array) {
             playerTwo.push(array[i]);
         }
     }
+
 }
 
 
@@ -331,8 +346,14 @@ function dealDeck(array) {
 // (one player has no cards remaining in their deck)
 function playWar() {
 
+    // evaluates if each player has 
+    // cards remaining in their stack
+    // if they do, game on!
     if (playerOne.length === 0) {
 
+        // the winning player needs 
+        // all cards being held in 'pot' 
+        // to total 52 cards
         playerTwo = pot.concat(playerTwo);
 
         console.log(`%cPlayer two wins!`, `color: ${color}; background: ${bgColor}; font-size: ${fontSize}`);
@@ -362,9 +383,8 @@ function flipOneCard() {
     let playerOneCard = playerOne[playerOne.length - 1];
     let playerTwoCard = playerTwo[playerTwo.length - 1];
 
-
-    // removes the last value of each player array,
-    // which is the top of each deck
+    // removes the last value of each player array, which 
+    // is the top of each deck
     playerOne.pop();
     playerTwo.pop();
 
@@ -381,7 +401,7 @@ function flipOneCard() {
         playerOne = pot.concat(playerOne);
 
         // empty the pot for the next round
-        pot = []
+        pot = [];
 
         playWar();
 
@@ -396,6 +416,7 @@ function flipOneCard() {
         playWar();
 
     } else {
+
         console.log('There was a tie!');
 
         flipFourMoreCards();
@@ -421,13 +442,17 @@ function flipFourMoreCards() {
     // every card laid is added to the current stack of cards
     pot = pot.concat(playerOneCards, playerTwoCards);
 
-
     let playerOneFlippedCard = playerOneCards[playerOneCards.length - 1];
     let playerTwoFlippedCard = playerTwoCards[playerTwoCards.length - 1];
 
 
+    // if one player doesn't have enough cards to 
+    // flip in the tiebreaker, the game ends 
     if (playerOne.length === 0) {
 
+        // the winning player needs 
+        // all cards being held in 'pot' 
+        // to total 52 cards
         playerTwo = pot.concat(playerTwo);
 
         console.log(`%cPlayer two wins!`, `color: ${color}; background: ${bgColor}; font-size: ${fontSize}`);
@@ -443,6 +468,7 @@ function flipFourMoreCards() {
         console.error('Player two cards:', playerTwo);
 
     } else {
+        
         if (playerOneFlippedCard.value > playerTwoFlippedCard.value) {
 
             console.log(`Player one wins the tiebreaker! ${playerOneFlippedCard.card} of ${playerOneFlippedCard.suit} beats ${playerTwoFlippedCard.card} of ${playerOneFlippedCard.suit}`);
@@ -474,7 +500,7 @@ function flipFourMoreCards() {
         }
     }
 
-    return; 
+    return;
 }
 
 
