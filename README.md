@@ -2,7 +2,7 @@
 Build a simulation for the card game 'war'.
 
 ## Wireframe
-![Wireframe](./game-of-war-wireframe.gif)
+![Wireframe](./game-of-war-wireframe.gif)s
 
 ### As a reminder, the rules to War are as follows:
 - A deck of cards is dealt to two players
